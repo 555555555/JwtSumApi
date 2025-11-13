@@ -10,6 +10,12 @@ using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ListenAnyIP(5000); // This is the key fix to ensure the app listens on all network interfaces
+});
+
+
 // Add services
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -123,18 +129,13 @@ builder.Services.AddAuthorization(options =>
 });
 
 
-//builder.Services.AddAuthorization();
-builder.WebHost.ConfigureKestrel(options =>
-{
-    options.ListenLocalhost(5000); // Forces HTTP on port 5000
-});
-
-
-
 var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+
+app.MapGet("/ping", () => "Running.");
+
 app.Run();

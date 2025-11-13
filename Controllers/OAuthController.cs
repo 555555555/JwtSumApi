@@ -24,7 +24,7 @@ namespace JwtSumApi.Controllers
         {
             return Challenge(new AuthenticationProperties
             {
-                RedirectUri = "/oauth/callback"
+                RedirectUri = "http://localhost:5000/oauth/callback"
             }, "GitHub");
         }
 
